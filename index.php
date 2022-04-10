@@ -36,33 +36,27 @@ date_default_timezone_set('Asia/Dhaka');
 <body>
     <video autoplay muted loop id="myVideo">
         <source src="static/videos/<?php 
-          switch ($current->weather[0]->description) {
-            case 'clear sky':
+          switch ($current->weather[0]->main) {
+            case 'Clear':
               echo "clear_sky";
               break;
-            case 'few clouds':
-              echo "few_clouds";
-              break;
-            case 'scattered clouds':
+            case 'Clouds':
               echo "scattered_clouds";
               break;
-            case 'broken clouds':
-              echo "broken_clouds";
-              break;
-            case 'shower rain':
-              echo "shower_rain";
-              break;
-            case 'rain':
+            case 'Rain':
               echo "rain";
               break;
-            case 'thunderstorm':
+            case 'Thunderstorm':
               echo "thunderstorm";
               break;
-            case 'snow':
+            case 'Snow':
               echo "snow";
               break;
-            case 'mist':
+            case 'Mist':
               echo "mist";
+              break;
+            case 'Haze':
+              echo "haze";
               break;
             
             default:
