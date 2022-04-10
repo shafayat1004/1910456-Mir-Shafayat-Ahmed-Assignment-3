@@ -1,0 +1,85 @@
+:root{
+    --bg: rgb(219, 255, 248);
+    --nav-bg: rgba(172, 187, 255, 0.7);
+    --bg-darker: #3a5a55b0;
+    --nav-btn: rgba(244, 230, 255, 0.911);
+    --nav-btn-hover: rgb(243, 238, 255);
+    --submit-btn: rgba(103, 222, 206, 0.911);
+    --border-radius-l:25px;
+    --border-radius-s:10px;
+    --bg-lighter: rgb(135, 207, 177);
+	--timeline-bg: rgba(197, 255, 130, 0);
+	--shadows: 20px 20px 30px;
+    --shadows-shorter: 7px 7px 10px;
+	--border-width: 0.3rem;
+	--marker-color: #ff8080;
+    --card-alpha : 0.75;
+	--card-bg: rgba(255, 241, 196, var(--card-alpha));
+    --card-bg-2: rgba(226, 253, 195, var(--card-alpha));
+    --card-bg-3: rgba(250, 134, 119, var(--card-alpha));
+    --card-bg-4: rgba(173, 252, 255, var(--card-alpha));
+    --card-bg-5: rgba(250, 255, 173, 0.75);
+    --textarea-color : rgba(255, 234, 220, 0.87);
+	--shadows-inner-l: 1px 1px 10px inset var(--bg-darker), -1px -1px 10px inset var(--bg-darker);
+    --shadows-inner-s: 1px 1px 3px inset var(--bg-darker), -1px -1px 3px inset var(--bg-darker);
+	--font-color-default: #333;
+    --minty-glass: rgba(198, 229, 219, var(--card-alpha));
+
+}
+
+body{
+    font-family: poppins, Georgia, 'Times New Roman', Times, serif;
+    background-color: var(--bg);
+    margin: 5ch;
+}
+
+/* ###################################################################### */
+/* SCROLLBAR DESIGN */
+/* ###################################################################### */
+::-webkit-scrollbar {
+    width: 1.5ch;
+    max-width: 1ch;
+    margin: 2vh;
+}
+::-webkit-scrollbar-track {
+    background: var(--bg-darker);
+    border-radius: var(--border-radius-l);
+}
+::-webkit-scrollbar-thumb {
+    border-radius: var(--border-radius-l);
+    background: var(--bg-lighter);
+}
+::-webkit-scrollbar-thumb:hover {
+    background: var(--nav-bg);
+}
+
+/* ###################################################################### */
+/* CARD STYLE */
+/* ###################################################################### */
+.card {
+	border: var(--border-width) solid var(--nav-bg);
+    box-shadow: var(--shadows), var(--shadows-inner-l);
+    border-radius: var(--border-radius-s);
+    min-width: 10ch;
+    max-width: 60ch;
+    padding: 2ch;
+}
+
+form#location{
+    display: flex;
+    background-color: var(--minty-glass);
+    margin: auto;
+    padding: 2ch;
+    border-radius: var(--border-radius-s);
+    gap: 2ch;
+    width: 50ch;
+}
+
+#location > button{
+    background-color: var(--submit-btn);
+    color: #333;
+}
+#location > select{
+    background-color: var(--minty-glass);
+    color: #333;
+}
