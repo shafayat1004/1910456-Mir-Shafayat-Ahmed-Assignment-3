@@ -37,6 +37,7 @@ date_default_timezone_set('Asia/Dhaka');
     <section>
         <form id="location" action="index.php" method="get">
             <select class="form-select" aria-label="" name="location">
+                <option value=''>Your Location</option>
                 <option <?php if($_GET["location"] === $dhaka){echo "selected";}?> value='<?php echo $dhaka ?>'>Dhaka</option>
                 <option <?php if($_GET["location"] === $chittagong){echo "selected";} ?> value='<?php echo $chittagong ?>'>Chittagong</option>
                 <option <?php if($_GET["location"] === $sylhet){echo "selected";} ?> value='<?php echo $sylhet ?>'>Sylhet</option>
@@ -134,11 +135,20 @@ date_default_timezone_set('Asia/Dhaka');
                 ?>
               </div>
               <div class="wind">
-                <?php
-                  echo "Wind Speed: ".$day->wind_speed." m/s<br>";
-                  echo "Wind Direction: ".$day->wind_deg."&deg<br>";
-                  echo "Wind Gust: ".$day->wind_gust." m/s<br>";
-                ?>
+                <img style="transform: rotate(
+                    <?php 
+                      $wind_deg = ($i===0) ? $current->wind_deg : $day->wind_deg;
+                      echo $wind_deg;
+                    ?>deg
+                  )" src="static/images/arrow.svg" alt="">
+                <div>
+                  <?php
+                    $wind_speed = ($i===0) ? $current->wind_speed : $day->wind_speed;
+                    echo "Wind Speed: ".$wind_speed." m/s<br>";
+                    echo "Wind Direction: ".$wind_deg."&deg<br>";
+                    echo "Wind Gust: ".$day->wind_gust." m/s<br>";
+                  ?>
+                </div>
               </div>
               <div class="atmosphere">
                 <?php
@@ -147,7 +157,8 @@ date_default_timezone_set('Asia/Dhaka');
                   echo "Dew Point: ".$day->dew_point."&deg<br>";
                   $pop = $day->pop * 100;
                   echo "Probability of Precipitation: ".$pop."%<br>";
-                  echo "Clouds: ".$day->clouds."%<br>";
+                  $clouds = ($i===0)?$current->clouds:$day->clouds;
+                  echo "Clouds: ".$clouds."%<br>";
                   if($day->rain){echo "Rain: ".$day->rain." mm<br>";}
                   if($day->snow){echo "Snow: ".$day->snow." mm<br>";}
                 ?>

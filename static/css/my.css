@@ -281,6 +281,8 @@ iframe {
     background-color: rgb(0, 255, 89);
 }
 .wind{
+    display: flex;
+    flex-direction: column;
     background-color: burlywood;
 }
 .atmosphere{

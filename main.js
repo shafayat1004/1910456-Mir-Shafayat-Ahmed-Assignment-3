@@ -43,3 +43,19 @@ function changeNavbarBrand() {
     }
 }
 
+let formSelect = document.querySelector(".form-select");
+let locationOption = formSelect.firstElementChild;
+
+getLocation();
+
+function getLocation() {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(setGPSValue);
+  } else {
+    form.innerHTML = "Geolocation is not supported by this browser.";
+  }
+}
+
+function setGPSValue(position) {
+  locationOption.value = `{\"lat\":${position.coords.latitude},\"long\":${position.coords.longitude}}`;
+}
