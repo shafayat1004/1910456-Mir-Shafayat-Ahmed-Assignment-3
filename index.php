@@ -7,6 +7,8 @@ $dhaka = '{"lat":23.8103,"long":90.4125}';
 $chittagong = '{"lat":22.3569,"long":91.7832}';
 $sylhet = '{"lat":24.8949,"long":91.8687}';
 
+
+
 $city = json_decode($_GET["location"]??$dhaka);
 $url  = 'https://api.openweathermap.org/data/2.5/onecall?lat='.$city->lat.'&lon='.$city->long.'&exclude=hourly,alerts,minutely&units=metric&appid='.$_ENV["API_KEY"];
 $contents = file_get_contents($url);
@@ -29,10 +31,45 @@ date_default_timezone_set('Asia/Dhaka');
     <title>Weather</title>
     <link rel="stylesheet" href="static/css/bootstrap.css">
     <link rel="stylesheet" href="static/css/my.css">
+    <script src="chart.js"></script>
 </head>
 <body>
     <video autoplay muted loop id="myVideo">
-        <source src="static/videos/ocean-waves.mp4" type="video/mp4">
+        <source src="static/videos/<?php 
+          switch ($current->weather[0]->description) {
+            case 'clear sky':
+              echo "clear_sky";
+              break;
+            case 'few clouds':
+              echo "few_clouds";
+              break;
+            case 'scattered clouds':
+              echo "scattered_clouds";
+              break;
+            case 'broken clouds':
+              echo "broken_clouds";
+              break;
+            case 'shower rain':
+              echo "shower_rain";
+              break;
+            case 'rain':
+              echo "rain";
+              break;
+            case 'thunderstorm':
+              echo "thunderstorm";
+              break;
+            case 'snow':
+              echo "snow";
+              break;
+            case 'mist':
+              echo "mist";
+              break;
+            
+            default:
+              echo "clear_sky";
+              break;
+          }
+        ?>.mp4" type="video/mp4">
     </video>
     <section>
         <form id="location" action="index.php" method="get">
@@ -90,49 +127,59 @@ date_default_timezone_set('Asia/Dhaka');
             <?php if ($i === 0): ?>
               <div id="currentTemp">
                 <h1>
-                  <?php echo $current->temp."&deg C"; ?>
+                  <?php 
+                    echo $current->temp."&deg C<br>"; 
+                    echo $current->weather[0]->description;   
+                  ?>
                 </h1>
               </div>
             <?php endif ?>          
             <div class="detailedTemp">
               <div class="sunTimes">
-                <?php
-                    $sunrise = new DateTime();
-                    $sunrise->setTimestamp( $time=$day->sunrise );
-                    $sunset = new DateTime();
-                    $sunset->setTimestamp( $time=$day->sunset );
-                    echo "Sunrise: ".$sunrise->format('h:i a')."<br>";
-                    echo "Sunset: ".$sunset->format('h:i a')."<br>";
-                ?>
+                <div class="text">
+                  <?php
+                      $sunrise = new DateTime();
+                      $sunrise->setTimestamp( $time=$day->sunrise );
+                      $sunset = new DateTime();
+                      $sunset->setTimestamp( $time=$day->sunset );
+                      echo "Sunrise: ".$sunrise->format('h:i a')."<br>";
+                      echo "Sunset: ".$sunset->format('h:i a')."<br>";
+                  ?>
+                </div>
               </div>
               <div class="moonTimes">
-                <?php
-                    $moonrise = new DateTime();
-                    $moonrise->setTimestamp( $time=$day->moonrise );
-                    $moonset = new DateTime();
-                    $moonset->setTimestamp( $time=$day->moonset );
-                    echo "Moonrise: ".$moonrise->format('h:i a')."<br>";
-                    echo "Moonset: ".$moonset->format('h:i a')."<br>";
-                    echo "Moon Phase: ".$day->moon_phase."<br>";
-                ?>
+                <div class="text">
+                  <?php
+                      $moonrise = new DateTime();
+                      $moonrise->setTimestamp( $time=$day->moonrise );
+                      $moonset = new DateTime();
+                      $moonset->setTimestamp( $time=$day->moonset );
+                      echo "Moonrise: ".$moonrise->format('h:i a')."<br>";
+                      echo "Moonset: ".$moonset->format('h:i a')."<br>";
+                      echo "Moon Phase: ".$day->moon_phase."<br>";
+                  ?>
+                </div>
               </div>
               <div class="temperatures">
-                <?php
-                  echo "Max: ".$day->temp->max."&deg C<br>";
-                  echo "Min: ".$day->temp->min."&deg C<br>";
-                  echo "Day: ".$day->temp->day."&deg C<br>";
-                  echo "Night: ".$day->temp->night."&deg C<br>";
-                  echo "Evening: ".$day->temp->eve."&deg C<br>";
-                  echo "Morning: ".$day->temp->morn."&deg C<br>";
-                ?>
+                <div class="chartDiv">
+                  <canvas id="tempChangeChart<?php echo $i ?>"></canvas>
+                </div>
+                <div class="text">
+                  <?php
+                    echo "Max: ".$day->temp->max."&deg C<br>";
+                    echo "Min: ".$day->temp->min."&deg C<br>";
+                  ?>
+                </div>
               </div>
               <div class="feelsLike">
-                <?php
-                  echo "Day: ".$day->feels_like->day."&deg C<br>";
-                  echo "Night: ".$day->feels_like->night."&deg C<br>";
-                  echo "Evening: ".$day->feels_like->eve."&deg C<br>";
-                  echo "Morning: ".$day->feels_like->morn."&deg C<br>";
-                ?>
+                <div class="text">
+                  <?php
+                    echo "Day: ".$day->feels_like->day."&deg C<br>";
+                    echo "Night: ".$day->feels_like->night."&deg C<br>";
+                    echo "Evening: ".$day->feels_like->eve."&deg C<br>";
+                    echo "Morning: ".$day->feels_like->morn."&deg C<br>";
+                  ?>
+                </div>
               </div>
               <div class="wind">
                 <img style="transform: rotate(
@@ -141,36 +188,96 @@ date_default_timezone_set('Asia/Dhaka');
                       echo $wind_deg;
                     ?>deg
                   )" src="static/images/arrow.svg" alt="">
-                <div>
+                <div class="text">
                   <?php
                     $wind_speed = ($i===0) ? $current->wind_speed : $day->wind_speed;
                     echo "Wind Speed: ".$wind_speed." m/s<br>";
                     echo "Wind Direction: ".$wind_deg."&deg<br>";
                     echo "Wind Gust: ".$day->wind_gust." m/s<br>";
-                  ?>
+                    ?>
                 </div>
               </div>
               <div class="atmosphere">
-                <?php
-                  echo "Pressure: ".$day->pressure." hPa<br>";
-                  echo "Humidity: ".$day->humidity."%<br>";
-                  echo "Dew Point: ".$day->dew_point."&deg<br>";
-                  $pop = $day->pop * 100;
-                  echo "Probability of Precipitation: ".$pop."%<br>";
-                  $clouds = ($i===0)?$current->clouds:$day->clouds;
-                  echo "Clouds: ".$clouds."%<br>";
-                  if($day->rain){echo "Rain: ".$day->rain." mm<br>";}
-                  if($day->snow){echo "Snow: ".$day->snow." mm<br>";}
-                ?>
+                <div class="text">
+                  <?php
+                    echo "Pressure: ".$day->pressure." hPa<br>";
+                    echo "Humidity: ".$day->humidity."%<br>";
+                    echo "Dew Point: ".$day->dew_point."&deg<br>";
+                    $pop = $day->pop * 100;
+                    echo "Probability of Precipitation: ".$pop."%<br>";
+                    $clouds = ($i===0)?$current->clouds:$day->clouds;
+                    echo "Clouds: ".$clouds."%<br>";
+                    if($day->rain){echo "Rain: ".$day->rain." mm<br>";}
+                    if($day->snow){echo "Snow: ".$day->snow." mm<br>";}
+                  ?>
+                </div>
               </div>
             </div>
+            <script>
+              let x<?php echo $i ?>Values = ["Morning", "Day", "Evening", "Night"];
+              let y<?php echo $i ?>Values = [<?php echo $day->temp->morn.','.$day->temp->day.','.$day->temp->eve.','.$day->temp->night ?>];
+              Chart.defaults.font.size = 20;
+              Chart.defaults.font.weight = 800;
+              Chart.defaults.color = "rgba(3,3,3,0.8)";
+              Chart.defaults.scale.grid.color = "rgba(3,3,3,0.8)"; 
+              new Chart("tempChangeChart<?php echo $i ?>", {
+                type: "line",
+                data: {
+                  labels: x<?php echo $i ?>Values,
+                  datasets: [{
+                    data: y<?php echo $i ?>Values,
+                    fill: false,
+                    backgroundColor: "rgba(0,0,0,1.0)",
+                    borderColor: "rgba(0,0,0,0.5)",
+                    cubicInterpolationMode: 'monotone',
+                    tension: 0.4
+                  }]
+                },
+                options: {
+                  responsive: true,
+                  maintainAspectRatio: false, 
+                  plugins: {
+                    legend: {
+                        display: false
+                    },
+                    title: {
+                      display: true,
+                    },
+                  },
+                  interaction: {
+                    intersect: false,
+                  },
+                  scales: {
+                    x: [{
+                      display: true,
+                      grid: {
+                        color: "#FFFFFF"
+                      }, 
+                      title: {
+                        display: true
+                      }, 
+                    }],
+                    y: [{
+                      display: true,
+                      grid: {
+                        color: "#FFFFFF"
+                      },
+                      title: {
+                        display: true,
+                        text: 'Temperature'
+                      },
+                      suggestedMin: <?php echo $day->temp->min ?>,
+                      suggestedMax: <?php echo $day->temp->max ?>,
+                    }]
+                  }
+                }
+              });
+            </script> 
           </div>
           <?php endforeach ?>
             
         </div>
     </section>
-
-
     <script src="bootstrap.js"></script>
     <script src="main.js"></script>
 </body>

@@ -24,7 +24,7 @@
     --shadows-inner-s: 1px 1px 3px inset var(--bg-darker), -1px -1px 3px inset var(--bg-darker);
 	--font-color-default: #333;
     --minty-glass: rgba(198, 229, 219, var(--card-alpha));
-
+    
 }
 #myVideo {
     position: fixed;
@@ -257,8 +257,11 @@ iframe {
     color: aliceblue;
 }
 .detailedTemp{
+    margin: auto;
     display: flex;
     flex-wrap: wrap;
+    justify-content: center;
+    /* align-items: center; */
 }
 .detailedTemp > *{
     min-width: 20ch;
@@ -269,24 +272,109 @@ iframe {
 }
 
 .temperatures{
+    background-image: url(../images/daynight.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    color: rgba(255, 228, 187, 0.86); 
+    display: flex;
+    flex-direction: column;
+    gap: 1ch;
+    justify-content: end;
+    min-width: 50ch;
     background-color: #ff8080;
 }
+
+.chartDiv{
+    min-width: 100%;
+    height: 30ch;
+    background-color: rgba(255, 212, 172, 0.474);
+    border-radius: var(--border-radius-s);
+}
+
+.temperatures .text{
+    padding: 1ch;
+    border-radius: var(--border-radius-s);
+    background-color: rgba(29, 57, 79, 0.618);
+}
+
 .sunTimes{
-    background-color: aqua;
+    background-image: url(../images/sun.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    color: rgba(255, 153, 0, 0.86); 
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
 }
+.sunTimes .text{
+    padding: 1ch;
+    border-radius: var(--border-radius-s);
+    background-color: rgba(79, 49, 29, 0.618);
+}
+
 .moonTimes{
-    background-color: rgb(0, 140, 255);
+    background-image: url(../images/moon.jpeg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    color: rgba(210, 187, 255, 0.868); 
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
 }
+.moonTimes .text{
+    padding: 1ch;
+    border-radius: var(--border-radius-s);
+    background-color: rgba(61, 29, 79, 0.618);
+}
+
 .feelsLike{
-    background-color: rgb(0, 255, 89);
+    background-image: url(../images/feelslike.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    color: rgba(255, 198, 171, 0.868); 
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
 }
+.feelsLike .text{
+    padding: 1ch;
+    border-radius: var(--border-radius-s);
+    background-color: rgba(79, 29, 29, 0.618);
+}
+
 .wind{
     display: flex;
     flex-direction: column;
-    background-color: burlywood;
+    gap: 1ch;
+    align-items: center;
+    justify-content: space-between;
+    background-image: url(../images/wind.webp);
+    background-repeat: no-repeat;
+    background-size: cover;
+    color: rgba(175, 255, 158, 0.844);
 }
+.wind img{
+    width: 5ch;
+}
+.wind .text{
+    padding: 1ch;
+    border-radius: var(--border-radius-s);
+    background-color: rgba(51, 51, 51, 0.618);
+}
+
 .atmosphere{
-    background-color: rgb(148, 222, 135);
+    background-image: url(../images/atmosphere.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    color: rgba(34, 51, 38, 0.868); 
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+}
+.atmosphere .text{
+    padding: 1ch;
+    border-radius: var(--border-radius-s);
+    background-color: rgba(153, 255, 202, 0.568);
 }
 
 form#location{
@@ -307,5 +395,4 @@ form#location{
     background-color: var(--minty-glass);
     color: #333;
 }
-
 
